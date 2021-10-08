@@ -348,7 +348,7 @@ std::string DojoSession::PrintFrameData(const char * prefix, u8 * data)
 	auto size = std::snprintf(nullptr, 0, format, prefix, effective_frame, frame, delay, player,
 		input_bitset.to_string().c_str(), triggerr, triggerl, analogx, analogy);
 
-	INFO_LOG(NETWORK, format, prefix, effective_frame, frame, delay, player,
+	NOTICE_LOG(NETWORK, format, prefix, effective_frame, frame, delay, player,
 		input_bitset.to_string().c_str(), triggerr, triggerl, analogx, analogy);
 
 	std::string output(size + 1, '\0');

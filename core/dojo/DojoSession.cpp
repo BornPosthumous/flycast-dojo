@@ -865,6 +865,8 @@ void DojoSession::ProcessBody(unsigned int cmd, unsigned int body_size, const ch
 		std::string Quark = MessageReader::ReadString((const char*)buffer, offset);
 		std::string MatchCode = MessageReader::ReadString((const char*)buffer, offset);
 
+		NOTICE_LOG(NETWORK, "SPECTATE_START VERSION %d", v);
+
 		dojo.game_name = GameName;
 		config::Quark = Quark;
 		config::MatchCode = MatchCode;
@@ -1012,7 +1014,7 @@ void DojoSession::receiver_client_thread()
 
 		tcp::resolver resolver(io_context);
 		tcp::resolver::results_type endpoints =
-			resolver.resolve(config::SpectatorIP, config::SpectatorPort);
+			resolver.resolve(config::SpectatorIP.get(), config::SpectatorPort.get());
 
 		tcp::socket socket(io_context);
 		asio::connect(socket, endpoints);
@@ -1063,7 +1065,7 @@ void DojoSession::transmitter_thread()
 
 		tcp::resolver resolver(io_context);
 		tcp::resolver::results_type endpoints =
-			resolver.resolve(config::SpectatorIP, config::SpectatorPort);
+			resolver.resolve(config::SpectatorIP.get(), config::SpectatorPort.get());
 
 		tcp::socket socket(io_context);
 		asio::connect(socket, endpoints);

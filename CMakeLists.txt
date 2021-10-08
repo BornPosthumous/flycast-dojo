@@ -66,11 +66,7 @@ target_compile_features(${PROJECT_NAME} PRIVATE c_std_11 cxx_std_11)
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	CXX_EXTENSIONS OFF
 	LINK_FLAGS_RELEASE -s)
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(${PROJECT_NAME} PRIVATE
-        $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
-        -fno-strict-aliasing)
-elseif(MSVC)
+if(MSVC)
 	target_compile_options(${PROJECT_NAME} PRIVATE /GR- /GS-)
 endif()
 
@@ -190,9 +186,6 @@ if (MSVC)
     find_package(libzip CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE libzip::zip)
 endif()
-
-find_package(CURL CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE CURL::libcurl)
 
 find_package(PkgConfig)
 if(PKG_CONFIG_FOUND AND NOT ANDROID AND NOT APPLE)
@@ -329,6 +322,11 @@ endif()
 if(WIN32)
     target_include_directories(${PROJECT_NAME} PRIVATE core/deps/dirent)
 endif()
+
+include(FetchContent)
+FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/whoshuu/cpr.git GIT_TAG f4622efcb59d84071ae11404ae61bd821c1c344b) # the commit hash for 1.6.2
+FetchContent_MakeAvailable(cpr)
+target_link_libraries(${PROJECT_NAME} PRIVATE cpr::cpr)
 
 if(NOT MSVC)
     target_include_directories(${PROJECT_NAME} PRIVATE core/deps/picotcp/include core/deps/picotcp/modules)
