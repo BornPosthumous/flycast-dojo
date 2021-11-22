@@ -4,9 +4,20 @@
         {
             "label": "make project",
             "type": "shell",
-            "command": "make -j8",
-            "options": {
-                "cwd": "${workspaceRoot}/shell/linux"
+            "windows": {
+                "command": "C:/msys64/mingw64/bin/mingw32-make -j 4",
+                "options": {
+                    "cwd": "${workspaceRoot}/build",
+                    "shell": {
+                        "executable" : "C:/msys64/mingw64.exe"
+                    },
+                },
+            },
+            "linux":{
+                "command": "make -j8",
+                "options":{
+                    "cwd": "${workspaceRoot}/build",
+                },
             },
             "problemMatcher": [],
             "group": {
